@@ -21,6 +21,8 @@ def parse_event(slack_events):
         if event["type"] == "message" and not "subtype" in event:
             print(event["channel"])
             if event["channel"] == "DH51YLLJX" or "DH5F2SWLD":
+
+                # switch between command for individual vs. command for group 
                 print("in channel")
                 text = event["text"]
                 channel = "CH289F6SX"
