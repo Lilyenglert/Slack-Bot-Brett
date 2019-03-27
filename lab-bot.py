@@ -29,21 +29,22 @@ if __name__ == "__main__":
         starterbot_id = slack_client.api_call("auth.test")["user_id"]
         while True:
             text, channel, timestamp = parse_event(slack_client.rtm_read())
-            x = raw_input("Say something: ")
-            string = "{}".format(text, str(x))
-            print (string)
-                
-            slack_client.api_call(
-                "chat.postMessage",
-                channel=channel,
-                text=x
-                )
-            slack_client.api_call(
-                "chat.update",
-                channel=channel,
-                ts=timestamp,
-                text="dontknow"
-                )
+            if text != None:
+                x = raw_input("Say something: ")
+                string = "{}".format(text, str(x))
+                print (string)
+                    
+                slack_client.api_call(
+                    "chat.postMessage",
+                    channel=channel,
+                    text=x
+                    )
+                slack_client.api_call(
+                    "chat.update",
+                    channel=channel,
+                    ts=timestamp,
+                    text="dontknow"
+                    )
             time.sleep(RTM_READ_DELAY)
     else:
         print("Connection failed. Exception traceback printed above.")
