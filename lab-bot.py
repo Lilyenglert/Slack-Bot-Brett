@@ -1,4 +1,4 @@
-# Code adapted from: https://www.fullstackpython.com/blog/build-first-slack-bot-python.html
+# adapted from: https://www.fullstackpython.com/blog/build-first-slack-bot-python.html
 
 
 import os
@@ -8,6 +8,9 @@ from slackclient import SlackClient
 
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 starterbot_id = None
+target_channel = "DH5F2SWLD"
+input()
+
 
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
@@ -22,9 +25,9 @@ def parse_event(target_channel, slack_events):
 
             # REMINDER: THE RESEARCHER SHOULD NEVER MESSAGE IN THE GROUP CHAT - it will forward it back to a channel
 
-            #  Lily is acting as the researcher here
             if event["user"] == "UH5CJN1D3":
                 # "DH5F2SWLD" for Devki
+                # "DH51YLLJX" for Lily
                 # group channel ID = "CH289F6SX"
                 # check whether the message text says GROUP or PARTICIPANT 
                 text = event["text"]
@@ -33,7 +36,7 @@ def parse_event(target_channel, slack_events):
                     print("You have switched to the GROUP channel. If you would like to change back please write PARTICIPANT")
                 elif text == 'PARTICIPANT':
                     #  using lily as place holder
-                    target_channel = "DH51YLLJX"
+                    target_channel = "DH5F2SWLD"
                     print("You have switched to the PARTICIPANT channel. If you would like to change back please write GROUP") 
                 
                 print("target channel is", target_channel)
@@ -52,15 +55,15 @@ def parse_event(target_channel, slack_events):
                 time.sleep(RTM_READ_DELAY)
                 return text, target_channel, event["ts"]
             return event["text"], target_channel, event["ts"]
-    return None, None, None
+    return None, target_channel, None
 
 if __name__ == "__main__":
     if slack_client.rtm_connect(with_team_state=False):
         print("Starter Bot connected and running!")
         # Read bot's user ID by calling Web API method `auth.test`
-        target_channel = "DH51YLLJX"
         starterbot_id = slack_client.api_call("auth.test")["user_id"]
         while True:
+            if ()
             text, target_channel, timestamp = parse_event(target_channel, slack_client.rtm_read())
     else:
         print("Connection failed. Exception traceback printed above.")
