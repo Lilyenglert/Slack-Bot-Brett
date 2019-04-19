@@ -23,7 +23,7 @@ researcher_user_id = "UH5CJN1D3"
 # group channel ID = "CH289F6SX"
 
 target_channel = group_channel_id
-RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
+RTM_READ_DELAY = 1
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
 def parse_event(target_channel, slack_events):
@@ -47,7 +47,7 @@ def parse_event(target_channel, slack_events):
             ##########
             # print("researcher_user_id: ", event["user"], "researcher_bot_channel_id: ", event["channel"])
             ##########
-            ## save file and re-run lab-bot. Write a message from the participant in the personal message with the bot
+            ## save file and re-run lab-bot. Write a message from the researcher in the personal message with the bot
 
             if event["user"] == researcher_user_id:
                 # check whether the message text says GROUP or PARTICIPANT 
