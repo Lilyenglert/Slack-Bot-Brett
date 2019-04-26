@@ -6,16 +6,17 @@ import time
 import re
 from slackclient import SlackClient
 
+
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 starterbot_id = None
 
 # DEFINE NEW MEMBERS FOR THE CHAT:  
 #### To find these ID's uncomment the section with the header "ID UPDATE FOR NEW PARTICIPANTS"
-participant_user_id = "UH2MEGTU5"
-group_channel_id = "CH289F6SX"
-part_bot_channel_id = "DH5F2SWLD"
-researcher_bot_channel_id = "DH51YLLJX"
-researcher_user_id = "UH5CJN1D3"
+participant_user_id = "UHZ8UF4CR"
+group_channel_id = "CHU6S0QP4"
+part_bot_channel_id = "DJ7NJAYLV"
+researcher_bot_channel_id = "DJ77S2F6G"
+researcher_user_id = "UHZ8Y7WSV"
 
 # "UH2MEGTU5" = Devki user id 
 # "DH5F2SWLD" for Devki-bot Channel
