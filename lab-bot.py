@@ -14,13 +14,12 @@ starterbot_id = None
 # DEFINE NEW MEMBERS FOR THE CHAT:  
 #### To find these ID's use Slack interface as described in documentation
 participant_user_id = "UHZ8UF4CR"
+researcher_user_id = "UHZ8Y7WSV"
 group_channel_id = "CHU6S0QP4"
 part_bot_channel_id = "DJ7NJAYLV"
 researcher_bot_channel_id = "DJ77S2F6G"
-researcher_user_id = "UHZ8Y7WSV"
 
 target_channel = group_channel_id
-attachment = None
 RTM_READ_DELAY = 1
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
@@ -29,10 +28,7 @@ def parse_event(target_channel, slack_events):
         if event["type"] == "message" and not "subtype" in event:
             if event["user"] == researcher_user_id:
                 text = event["text"]
-                try:
-                    attachment = event["files"]
-                except:
-                    attachment = None
+    
                 # Check whether the message text says GROUP or PARTICIPANT 
                 if text == 'GROUP':
                     target_channel = group_channel_id 
@@ -41,11 +37,9 @@ def parse_event(target_channel, slack_events):
                     target_channel = part_bot_channel_id #participant_target_channel
                     print("You have switched to the PARTICIPANT channel. If you would like to change back please write GROUP")
                 if text != None and text != 'GROUP' and text != 'PARTICIPANT':
-                    send_message(target_channel, text, timestamp, attachment)
-                elif attachment != None:
-                    send_message(target_channel, text, timestamp, attachment)
+                    send_message(target_channel, text, timestamp)
                 time.sleep(RTM_READ_DELAY)
-                return text, target_channel, event["ts"], attachment
+                return text, target_channel, event["ts"]
 
             # if the participant sends a personal message, then print that message in the researchers message
             elif event["user"] == participant_user_id and event["channel"] == part_bot_channel_id:
@@ -53,20 +47,16 @@ def parse_event(target_channel, slack_events):
                 if text != None:
                     text = "The Participant: " + event["text"]
                     target_channel = researcher_bot_channel_id
-                    try:
-                      attachment = event["files"]
-                    except:
-                      attachment = None
-                    send_message(target_channel, text, timestamp, attachment)
+                    send_message(target_channel, text, timestamp)
                     target_channel = part_bot_channel_id 
                 time.sleep(RTM_READ_DELAY)
-                return text, target_channel, event["ts"], attachment
-            return event["text"], target_channel, event["ts"], attachment
-    return None, target_channel, None, None
+                return text, target_channel, event["ts"]
+            return event["text"], target_channel, event["ts"]
+    return None, target_channel, None
     
 
 #  Helper for sending 
-def send_message(target_channel, text, timestamp, attachment):
+def send_message(target_channel, text, timestamp):
     slack_client.api_call(
         "chat.postMessage",
         channel=target_channel,
@@ -85,7 +75,7 @@ if __name__ == "__main__":
         # Read bot's user ID by calling Web API method `auth.test`
         starterbot_id = slack_client.api_call("auth.test")["user_id"]
         while True:
-            text, target_channel, timestamp, attachment = parse_event(target_channel, slack_client.rtm_read())
+            text, target_channel, timestamp = parse_event(target_channel, slack_client.rtm_read())
     else:
         print("Connection failed. Exception traceback printed above.")
 
